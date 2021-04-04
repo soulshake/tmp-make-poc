@@ -40,13 +40,13 @@ wat:
 $(OUTDIR) $(FINALDIR):
 	@mkdir -pv $@
 
-$(JSON_OUTFILES): $(IN_JSON) | $(OUTDIR)
+$(JSON_OUTFILES): json/%.json : source/%.json | $(OUTDIR)
 	cat source/$(@F) | jq . > $@
 
-$(TXT_OUTFILES): $(IN_TXT) | $(OUTDIR)
+$(TXT_OUTFILES): json/%.json : source/%.txt | $(OUTDIR)
 	jq -R < source/$(@F:json=txt) > $@
 
-$(YAML_OUTFILES): $(IN_YAML) | $(OUTDIR)
+$(YAML_OUTFILES): json/%.json : source/%.yaml | $(OUTDIR)
 	yq e -j source/$(@F:json=yaml) > $@
 
 
